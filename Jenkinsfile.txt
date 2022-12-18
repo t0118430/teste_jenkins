@@ -11,13 +11,11 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-                echo "buildin version ${NEW_VERSION}"
             }
         }
         stage('Test') {
             when {
                 expression {
-                    BRANCH_NAME == 'dev' || BRANCH_NAME == 'master'
                     params.executeTests
                 }
             }
@@ -28,17 +26,10 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                echo 'Deploying....'
-                withCredentials([
-                    usernamePassword(credentials: 'server-credentials', usernameVariable: USER, passwordVariable: PWD)
-                ]){
-                    sh "some script ${USER} ${PWD}"
-                }
+                echo 'Deploying....'               
                 echo "deploying version ${params.VERSION}"
             }
         }
     }
-	post {
-		
-	}
+	
 }
